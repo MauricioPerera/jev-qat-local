@@ -45,3 +45,4 @@ service.json
 *.part
 *.log
 *.zip
+*.exe

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jev-qat-local"
-version = "0.2.0"
+version = "0.3.0"
 description = "Local multimodal Gemma E2B/E4B QAT decision adapter, token budgets and independent option probabilities"
 readme = "README.md"
 license = {file = "LICENSE"}

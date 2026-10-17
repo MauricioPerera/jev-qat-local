@@ -178,6 +178,25 @@ def test_hidden_helper_output_is_streamed_and_failures_are_preserved(monkeypatch
     assert "25% descargado" in capsys.readouterr().out
 
 
+def test_upgrade_refuses_foreign_service_state_before_replacing_code(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    base, bundle = tmp_path / "installed", tmp_path / "bundle"
+    base.mkdir()
+    bundle.mkdir()
+    (base / ".jev-qat-install.json").write_text(json.dumps({"product": setup.PRODUCT}))
+    (base / "install.json").write_text(json.dumps({"source_sha256": "previous-version"}))
+    state = base / "app/integration/jev-qat-e2b/service.json"
+    state.parent.mkdir(parents=True)
+    state.write_text(json.dumps({"status": "ready", "workspace": str(tmp_path / "other-installation")}))
+    (bundle / "source.zip").write_bytes(b"new source not unpacked")
+    (bundle / "bundle.json").write_text(json.dumps({"product": setup.PRODUCT,
+        "source": {"sha256": setup.digest(bundle / "source.zip")}}))
+    monkeypatch.setattr(setup, "run", lambda *args, **kwargs: pytest.fail("Foreign process stop attempted"))
+    monkeypatch.setattr(setup, "unpack", lambda *args, **kwargs: pytest.fail("Code replaced before ownership check"))
+    with pytest.raises(RuntimeError, match="otra instalacion"):
+        setup.install(SimpleNamespace(install_dir=base, bundle=bundle))
+
+
 def test_release_bundle_is_a_committed_snapshot_and_normalizes_batch_lines(tmp_path, monkeypatch):
     stream = io.BytesIO()
     with ZipFile(stream, "w") as archive:

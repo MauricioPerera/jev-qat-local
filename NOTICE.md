@@ -23,6 +23,9 @@ No se distribuyen sus pesos, binarios, bancos de entrenamiento ni medios origina
   Conserva sus licencias y las de los wheels en sus directorios privados. Estos
   componentes no se incluyen en el ZIP del instalador; se verifican y descargan
   desde sus distribuidores. El código MIT del adaptador no cambia sus condiciones.
+- El lanzador EXE de Windows se construye con C# y utiliza .NET Framework del
+  sistema. Su código está en `installer/windows/Bootstrapper.cs`, bajo la misma
+  licencia MIT del proyecto; no incluye un runtime de .NET redistribuido.
 - El evaluador inicial usa el corpus MASSIVE, de FitzGerald et al. / Amazon Science,
   a través de [mteb/amazon_massive_scenario](https://huggingface.co/datasets/mteb/amazon_massive_scenario).
   El código conserva atribución, revisión y hashes al preparar los datos. Los

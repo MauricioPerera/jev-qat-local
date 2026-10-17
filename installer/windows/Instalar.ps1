@@ -11,8 +11,17 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+$OutputEncoding = New-Object Text.UTF8Encoding($false)
+[Console]::OutputEncoding = $OutputEncoding
 $lock = $null
 try {
+    if ($env:JEV_SETUP_GATE) {
+        $deadline = [DateTime]::UtcNow.AddSeconds(30)
+        while (-not (Test-Path -LiteralPath $env:JEV_SETUP_GATE)) {
+            if ([DateTime]::UtcNow -ge $deadline) { throw 'No se pudo iniciar el instalador EXE.' }
+            Start-Sleep -Milliseconds 50
+        }
+    }
     if (-not [Environment]::Is64BitOperatingSystem -or $env:PROCESSOR_ARCHITECTURE -eq 'ARM64') {
         throw 'Este instalador requiere Windows x64 (Intel o AMD).'
     }

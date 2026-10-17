@@ -42,16 +42,18 @@ jobs:
         with:
           python-version: '3.14'
       - name: Build installer from committed snapshot
-        run: python scripts/build_windows_installer.py
-      - name: Install private runtime and dependencies with Windows PowerShell 5.1
+        run: python scripts/build_windows_installer.py --exe
+      - name: Install from the single EXE with Windows PowerShell 5.1
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          $zip = Get-ChildItem -LiteralPath dist/windows -Filter '*.zip' | Select-Object -First 1
-          $bundle = Join-Path $env:RUNNER_TEMP 'E2B bundle'
+          $built = Get-ChildItem -LiteralPath dist/windows -Filter '*.exe' | Select-Object -First 1
+          $exe = Join-Path $env:RUNNER_TEMP 'Instalador E2B ñ.exe'
+          Copy-Item -LiteralPath $built.FullName -Destination $exe
           $install = Join-Path $env:RUNNER_TEMP 'E2B prueba Unicode ñ'
-          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $bundle
-          & (Join-Path $bundle 'Instalar.ps1') -InstallDir $install -DependenciesOnly
+          & $exe --verify --non-interactive
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $exe -InstallDir $install -DependenciesOnly --non-interactive
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $menu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Jev QAT E2B'
           $shell = New-Object -ComObject WScript.Shell
@@ -63,5 +65,5 @@ jobs:
           & (Join-Path $install 'python/python.exe') scripts/smoke_windows_install.py --install-dir $install
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           # A second run must keep ports and reuse installed assets/wheels.
-          & (Join-Path $bundle 'Instalar.ps1') -InstallDir $install -DependenciesOnly -NoShortcuts
+          & $exe -InstallDir $install -DependenciesOnly -NoShortcuts --non-interactive
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

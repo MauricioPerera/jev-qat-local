@@ -191,10 +191,15 @@ def install(args):
     config = json.loads(config_path.read_text(encoding="utf8")) if config_path.exists() else None
     if previous.get("source_sha256") != bundle["source"]["sha256"]:
         if (app / "integration/jev-qat-e2b/service.json").exists():
-            # Never hot-replace a possibly active application.
+            # Stop only the installation being updated before replacing its code.
             state = json.loads((app / "integration/jev-qat-e2b/service.json").read_text(encoding="utf8"))
             if state.get("status") in {"ready", "starting"}:
-                raise RuntimeError("Deten E2B antes de instalar otra version")
+                if Path(state.get("workspace", "")).resolve() != app.resolve():
+                    raise RuntimeError("El estado pertenece a otra instalacion; no se detendra")
+                print("Deteniendo la instalacion anterior de E2B para actualizarla...", flush=True)
+                # The existing CLI also verifies process creation times and model /
+                # executable identity; it refuses to terminate unrelated processes.
+                run([sys.executable, "-m", "jev_qat.e2b", "stop"], cwd=app)
         unpack(source, app)
     packages = base / "python/Lib/site-packages"
     wheel_receipts = packages / ".installed-wheels"

@@ -59,8 +59,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--ref", default="HEAD")
     parser.add_argument("--output", type=Path, default=ROOT / "dist/windows")
+    parser.add_argument("--exe", action="store_true", help="Also build a single-file Windows x64 EXE")
     args = parser.parse_args()
-    build(args.output, args.ref)
+    bundle = build(args.output, args.ref)
+    if args.exe:
+        from build_windows_exe import build_executable
+        build_executable(bundle)
 
 
 if __name__ == "__main__":

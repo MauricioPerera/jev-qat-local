@@ -2,16 +2,24 @@
 
 ## Uso
 
-1. Descarga el ZIP del instalador desde [Releases](https://github.com/MauricioPerera/jev-qat-local/releases).
-2. Extrae **todos** los archivos; no ejecutes el CMD dentro del visor del ZIP.
-3. Haz doble clic en **Instalar E2B.cmd** y deja la ventana abierta durante la descarga.
-4. Al terminar, se abre la interfaz en el navegador predeterminado.
+1. Descarga **JevQat-E2B-Setup-0.3.0.exe** desde [Releases](https://github.com/MauricioPerera/jev-qat-local/releases).
+2. Haz doble clic y deja la ventana de progreso abierta durante la descarga.
+3. Al terminar, se abre la interfaz en el navegador predeterminado.
 
-El ZIP es pequeño: no contiene pesos, Python ni FFmpeg. La instalación descarga
+El EXE contiene el instalador y el código de una revisión fija; no contiene pesos,
+Python ni FFmpeg. Extrae sus archivos temporales automáticamente y usa PowerShell
+5.1 de Windows. Muestra el avance y guarda un registro de instalación.
+
+El ejecutable es x64 y utiliza .NET Framework del sistema, disponible en Windows
+10/11. No requiere un SDK de .NET ni herramientas de desarrollo para ejecutarlo.
+La instalación descarga
 unos 4,5 GB y guarda todo en `%LOCALAPPDATA%\JevQatLocal`, sin privilegios de
 administrador, cambios en el PATH global ni instalación de un servicio de Windows.
 Reserva al menos 8 GB de disco. Requiere Windows 10/11 x64 y conexión a Internet;
 el rendimiento y la memoria disponible dependen de tu equipo.
+
+También se publica un ZIP alternativo: extrae todos sus archivos y abre
+`Instalar E2B.cmd`. No ejecutes ese CMD dentro del visor del ZIP.
 
 Usa el menú Inicio → **Jev QAT E2B → Abrir E2B** o los CMD en la carpeta instalada.
 **Detener E2B** apaga esa instancia. Cerrar el navegador deja el modelo cargado.
@@ -43,10 +51,10 @@ descargados. Consulta [NOTICE.md](../NOTICE.md).
 
 ## Opciones
 
-Desde una consola, en la carpeta extraída:
+Desde una consola, en la carpeta de la descarga:
 
 ```powershell
-& '.\Instalar E2B.cmd' -InstallDir 'D:\Aplicaciones\E2B'
+& '.\JevQat-E2B-Setup-0.3.0.exe' -InstallDir 'D:\Aplicaciones\E2B'
 ```
 
 | Opción | Efecto |
@@ -57,6 +65,8 @@ Desde una consola, en la carpeta extraída:
 | `-DependenciesOnly` | Prepara herramientas sin descargar pesos ni arrancar la API |
 | `-DownloadCache 'ruta'` | Reutiliza ZIPs y wheels verificados de esa carpeta |
 | `-ModelCache 'ruta'` | Copia ambos GGUF oficiales tras verificar sus hashes |
+| `--verify` | Solo en EXE: verifica el paquete incorporado sin instalar ni descargar |
+| `--non-interactive` | Solo en EXE: no espera una tecla en caso de error, para automatización |
 
 La caché aportada es de solo lectura para el instalador. La descarga ordinaria no
 necesita estas opciones. En modo `DependenciesOnly` la instalación no puede inferir;
@@ -64,8 +74,15 @@ ejecuta de nuevo sin esa opción para completarla.
 
 La carpeta de destino debe estar vacía o pertenecer a una instalación previa de
 este producto. Un bloqueo impide dos instalaciones simultáneas. Las repeticiones
-conservan los puertos y reutilizan componentes completados. Detén la aplicación
-antes de instalar una versión distinta. No hay actualización automática.
+conservan los puertos y reutilizan componentes completados. Al ejecutar una versión
+distinta, detiene de forma controlada únicamente la instancia de ese destino antes
+de reemplazar su código. Rechaza un estado que pertenezca a otra carpeta. No busca
+ni descarga actualizaciones por su cuenta.
+
+`Ctrl+C` o cerrar el EXE durante la instalación termina sus propios procesos de
+instalación. Los rangos completos del modelo se conservan para reanudar. Si la
+instalación termina bien, el servicio queda funcionando después de cerrar el EXE.
+No termina otras instalaciones de E2B o E4B.
 
 ## Diagnóstico y retirada
 
@@ -78,33 +95,45 @@ El estado sin credenciales del instalador está en `install.json`. Los registros
 servicio están en `app/integration/jev-qat-e2b/service.log` y `backend.log`. El archivo
 `service.json` contiene un token administrativo local: no lo publiques.
 
-El instalador consiste en scripts legibles y no tiene firma Authenticode. Se
-publica un archivo `.zip.sha256` junto al ZIP para comprobar su integridad:
+El EXE no tiene firma Authenticode. Se publica un archivo `.exe.sha256` junto al
+ejecutable para comprobar su integridad; el ZIP también tiene su propia suma:
 
 ```powershell
-Get-FileHash .\JevQat-E2B-Windows-0.2.0.zip -Algorithm SHA256
-Get-Content .\JevQat-E2B-Windows-0.2.0.zip.sha256
+Get-FileHash .\JevQat-E2B-Setup-0.3.0.exe -Algorithm SHA256
+Get-Content .\JevQat-E2B-Setup-0.3.0.exe.sha256
 ```
 
 Para retirarlo, usa **Detener E2B**, guarda los archivos que quieras conservar y
 elimina la carpeta instalada y sus accesos del menú Inicio. No incluye un borrado
 automático de modelos ni de cargas del usuario.
 
+Los registros del EXE se guardan en `%LOCALAPPDATA%\JevQatLocal-Setup\logs`.
+No contienen el token administrativo, pero pueden contener rutas locales. El EXE
+verifica el SHA-256 de su paquete interno antes de extraerlo. La suma no sustituye
+una firma de editor. Tras una salida normal retira únicamente sus archivos temporales
+conocidos; una interrupción forzada puede dejar un pequeño directorio temporal.
+
 ## Construcción y pruebas
 
 Desde un checkout con Git y Python 3.11+:
 
 ```powershell
-python scripts/build_windows_installer.py --ref HEAD --output dist/windows
+python scripts/build_windows_installer.py --ref HEAD --output dist/windows --exe
 ```
 
 Solo empaqueta código de un commit; rechaza directorios de datos o archivos
-inesperados y genera ZIP + SHA-256. Usa una carpeta de salida nueva si ya existe
+inesperados y genera ZIP, EXE x64 y sus SHA-256. La construcción del EXE necesita
+Windows y `csc.exe` de .NET Framework; no instala compiladores en el equipo del
+usuario. El código C# y el manifiesto `asInvoker` proceden del mismo commit que
+el paquete incorporado. Usa una carpeta de salida nueva si ya existe
 un paquete con la misma versión.
 
 Las pruebas unitarias verifican hashes, caché, rutas de ZIP, enlaces y puertos.
-La CI ejecuta además el bootstrap real con **Windows PowerShell 5.1**, Python
+La CI ejecuta además el **EXE real** con **Windows PowerShell 5.1**, Python
 privado, las 17 dependencias y FFmpeg en una carpeta con espacios y caracteres
 Unicode. Repite el instalador para comprobar su reutilización. Esa prueba no
-descarga 4,34 GB de pesos ni hace inferencia: la inferencia real se comprueba
+descarga 4,34 GB de pesos ni hace inferencia. Otras pruebas ejecutan el EXE compilado
+con un instalador de prueba para comprobar corrupción del paquete, argumentos
+Unicode, conservación del servicio al terminar y limpieza de sus propios procesos
+en error o cancelación. La inferencia real se comprueba
 por separado en hardware local antes de publicar la versión.

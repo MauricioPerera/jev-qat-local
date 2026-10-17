@@ -1,5 +1,8 @@
 Jev QAT Local - Instalador de E2B para Windows x64
 
+Recomendado: descarga JevQat-E2B-Setup-0.3.0.exe y haz doble clic. El EXE extrae
+este paquete automaticamente. Estos pasos son para la alternativa ZIP:
+
 1. Extrae TODO el ZIP en una carpeta.
 2. Haz doble clic en "Instalar E2B.cmd".
 3. Espera la descarga y verificacion de E2B QAT Q4 y su proyector multimodal.
@@ -35,12 +38,12 @@ Opciones de diagnostico:
   -DownloadCache    Carpeta con ZIPs/wheels previamente descargados y verificables.
   -ModelCache       Carpeta con ambos GGUF oficiales, para copiarlos tras verificar.
 
-La interfaz es local; no se expone a Internet. El instalador es un conjunto de
-scripts legibles, no un ejecutable firmado. Consulta su codigo, licencia MIT y
+La interfaz es local; no se expone a Internet. El EXE y los scripts no tienen firma
+Authenticode. Consulta su codigo, licencia MIT y
 sumas SHA-256 en la publicacion oficial:
 https://github.com/MauricioPerera/jev-qat-local/releases
 
 Si falla el arranque, consulta app\integration\jev-qat-e2b\service.log y backend.log.
-Deten esta instalacion antes de actualizar a otra version. Para retirarla: usa
+Al actualizar, el instalador detiene solo la instalacion de ese destino. Para retirarla: usa
 "Detener E2B", elimina su carpeta y sus accesos del menu Inicio. Los modelos y las
 cargas de esa instalacion estan dentro de ella; guarda lo que quieras conservar.
