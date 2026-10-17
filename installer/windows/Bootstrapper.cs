@@ -141,6 +141,9 @@ internal static class Bootstrapper
         start.StandardOutputEncoding = new UTF8Encoding(false);
         start.StandardErrorEncoding = new UTF8Encoding(false);
         start.EnvironmentVariables["PYTHONIOENCODING"] = "utf-8";
+        // A parent PowerShell 7 may supply Core-only modules. This child always
+        // uses Windows PowerShell 5.1 and must discover its own built-in modules.
+        start.EnvironmentVariables["PSModulePath"] = Path.Combine(Environment.SystemDirectory, @"WindowsPowerShell\v1.0\Modules");
         start.EnvironmentVariables["JEV_SETUP_GATE"] = Path.Combine(folder, "start.gate");
         using (ProcessGroup group = new ProcessGroup())
         using (Process process = new Process())

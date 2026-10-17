@@ -25,6 +25,7 @@ def executable(tmp_path_factory):
     script = r'''param([string]$InstallDir, [string]$ModelCache, [switch]$NoBrowser)
 $ErrorActionPreference = 'Stop'
 while (-not (Test-Path -LiteralPath $env:JEV_SETUP_GATE)) { Start-Sleep -Milliseconds 20 }
+Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256 | Out-Null
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
 $info = New-Object Diagnostics.ProcessStartInfo
 $info.FileName = Join-Path $PSHOME 'powershell.exe'
@@ -71,6 +72,18 @@ def test_exe_verifies_embedded_payload_without_installation(executable):
     result = subprocess.run([str(exe), "--verify", "--non-interactive"], capture_output=True, text=True, encoding="utf8", timeout=20)
     assert result.returncode == 0 and "PAYLOAD_OK version=0.3.0" in result.stdout
     assert exe.with_suffix(".exe.sha256").is_file()
+
+
+def test_exe_does_not_inherit_incompatible_powershell_modules(executable, tmp_path):
+    exe, _ = executable
+    destination = tmp_path / "module-environment"
+    environment = {**os.environ, "PSModulePath": str(tmp_path / "nonexistent-core-modules")}
+    with (tmp_path / "module-test.log").open("wb") as output:
+        result = subprocess.run([str(exe), "-InstallDir", str(destination), "-ModelCache", "fail", "--non-interactive"],
+                                env=environment, stdout=output, stderr=subprocess.STDOUT, timeout=30)
+    assert result.returncode == 7
+    child = json.loads((destination / "child.json").read_text())
+    wait_dead(child["pid"])
 
 
 def test_corrupt_embedded_payload_is_rejected_before_running_scripts(executable, tmp_path):
