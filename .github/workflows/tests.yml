@@ -51,8 +51,15 @@ jobs:
           $bundle = Join-Path $env:RUNNER_TEMP 'E2B bundle'
           $install = Join-Path $env:RUNNER_TEMP 'E2B prueba Unicode ñ'
           Expand-Archive -LiteralPath $zip.FullName -DestinationPath $bundle
-          & (Join-Path $bundle 'Instalar.ps1') -InstallDir $install -DependenciesOnly -NoShortcuts
+          & (Join-Path $bundle 'Instalar.ps1') -InstallDir $install -DependenciesOnly
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $menu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Jev QAT E2B'
+          $shell = New-Object -ComObject WScript.Shell
+          foreach ($name in @('Abrir E2B', 'Detener E2B')) {
+            $shortcut = Join-Path $menu ($name + '.lnk')
+            if (-not (Test-Path -LiteralPath $shortcut)) { throw 'Missing Start menu shortcut' }
+            if ($shell.CreateShortcut($shortcut).TargetPath -ne (Join-Path $install ($name + '.cmd'))) { throw 'Incorrect shortcut target' }
+          }
           & (Join-Path $install 'python/python.exe') scripts/smoke_windows_install.py --install-dir $install
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           # A second run must keep ports and reuse installed assets/wheels.
