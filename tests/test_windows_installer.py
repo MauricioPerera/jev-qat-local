@@ -161,6 +161,23 @@ def test_runtime_falls_back_to_cpu_when_vulkan_cannot_start(tmp_path, monkeypatc
     assert [directory.name for directory in installed] == ["llama-b11669-vulkan", "llama-b11669-cpu"]
 
 
+def test_hidden_helper_output_is_streamed_and_failures_are_preserved(monkeypatch, capsys):
+    import subprocess
+    class Process:
+        stdout = io.StringIO("25% descargado\nerror de descarga\n")
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            pass
+        def wait(self):
+            return 7
+    monkeypatch.setattr(setup.subprocess, "Popen", lambda *args, **kwargs: Process())
+    with pytest.raises(subprocess.CalledProcessError) as error:
+        setup.run(["python", "download.py"])
+    assert error.value.returncode == 7
+    assert "25% descargado" in capsys.readouterr().out
+
+
 def test_release_bundle_is_a_committed_snapshot_and_normalizes_batch_lines(tmp_path, monkeypatch):
     stream = io.BytesIO()
     with ZipFile(stream, "w") as archive:

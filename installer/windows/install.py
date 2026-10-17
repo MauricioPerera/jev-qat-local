@@ -120,8 +120,20 @@ def port_pair(first=18166, last=18366):
 
 
 def run(arguments, **kwargs):
-    return subprocess.run([str(arg) for arg in arguments], check=True,
-                          creationflags=NO_WINDOW, **kwargs)
+    arguments = [str(arg) for arg in arguments]
+    if kwargs.get("capture_output") or "stdout" in kwargs or "stderr" in kwargs:
+        return subprocess.run(arguments, check=True, creationflags=NO_WINDOW, **kwargs)
+    # CREATE_NO_WINDOW avoids flashing helper consoles. Explicit pipes preserve
+    # progress/errors even when Windows discards implicit console inheritance.
+    with subprocess.Popen(arguments, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                          text=True, encoding="utf8", errors="replace",
+                          creationflags=NO_WINDOW, **kwargs) as process:
+        for line in process.stdout:
+            print(line, end="", flush=True)
+        result = process.wait()
+        if result:
+            raise subprocess.CalledProcessError(result, arguments)
+        return subprocess.CompletedProcess(arguments, result)
 
 
 def runtime(app, assets, downloads, external_cache):
@@ -218,7 +230,7 @@ def install(args):
     for name, command in (("Abrir E2B", "start"), ("Detener E2B", "stop")):
         (base / (name + ".cmd")).write_text(
             '@echo off\r\nsetlocal DisableDelayedExpansion\r\n"%~dp0python\\python.exe" "%~dp0launch.py" '
-            + command + '\r\nif errorlevel 1 pause\r\n', encoding="ascii")
+            + command + '\r\nif errorlevel 1 (\r\n  pause\r\n  exit /b 1\r\n)\r\n', encoding="ascii")
     if not args.no_shortcuts:
         shortcuts(base)
     if args.dependencies_only:
@@ -232,7 +244,11 @@ def install(args):
         for name, spec in bundle["model"]["files"].items():
             source_model = args.model_cache / name
             target = app / bundle["model"]["directory"] / name
-            if not target.exists() and source_model.is_file() and digest(source_model) == spec["sha256"]:
+            if target.exists() or not source_model.is_file():
+                continue
+            print(f"Verificando cache del modelo: {name}...", flush=True)
+            if digest(source_model) == spec["sha256"]:
+                print(f"Copiando y verificando {name}...", flush=True)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 temporary = target.with_suffix(".copy-partial")
                 shutil.copyfile(source_model, temporary)
