@@ -18,6 +18,11 @@ No se distribuyen sus pesos, binarios, bancos de entrenamiento ni medios origina
   Se descarga por separado con sus avisos de licencia.
 - [FFmpeg](https://ffmpeg.org/legal.html) y ffprobe se instalan por separado;
   sus condiciones dependen de la compilación utilizada.
+- El instalador de Windows descarga [Python embebido de la PSF](https://www.python.org/downloads/release/python-3148/)
+  y [FFmpeg 9.0.2 de Gyan](https://github.com/GyanD/codexffmpeg/releases/tag/9.0.2).
+  Conserva sus licencias y las de los wheels en sus directorios privados. Estos
+  componentes no se incluyen en el ZIP del instalador; se verifican y descargan
+  desde sus distribuidores. El código MIT del adaptador no cambia sus condiciones.
 - El evaluador inicial usa el corpus MASSIVE, de FitzGerald et al. / Amazon Science,
   a través de [mteb/amazon_massive_scenario](https://huggingface.co/datasets/mteb/amazon_massive_scenario).
   El código conserva atribución, revisión y hashes al preparar los datos. Los

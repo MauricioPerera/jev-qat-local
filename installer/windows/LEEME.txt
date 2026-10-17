@@ -1,0 +1,46 @@
+Jev QAT Local - Instalador de E2B para Windows x64
+
+1. Extrae TODO el ZIP en una carpeta.
+2. Haz doble clic en "Instalar E2B.cmd".
+3. Espera la descarga y verificacion de E2B QAT Q4 y su proyector multimodal.
+4. Se abrira la interfaz en tu navegador cuando el modelo este listo.
+
+No necesitas Python, Git ni FFmpeg previamente instalados. No requiere permisos
+de administrador. Instala Python privado y las dependencias de la aplicacion;
+no modifica el PATH del sistema ni tus instalaciones de Python.
+
+Destino predeterminado: %LOCALAPPDATA%\JevQatLocal
+Descarga: unos 4,5 GB. Reserva al menos 8 GB de espacio libre para la instalacion.
+Windows 10/11 x64. Usa Vulkan si esta disponible; en otro caso configura CPU,
+que sera mas lenta. La velocidad y memoria necesaria dependen del equipo.
+
+Puedes volver a ejecutar el instalador despues de una interrupcion: reutiliza las
+descargas verificadas y reanuda los rangos completados del modelo.
+
+El menu Inicio incluye "Jev QAT E2B / Abrir E2B" y "Detener E2B". Tambien hay
+archivos del mismo nombre dentro de la carpeta de instalacion. Cerrar el navegador
+no detiene el modelo. No se configura inicio automatico con Windows.
+
+Si los puertos habituales estan ocupados durante la primera instalacion, elige otro
+par libre y muestra la direccion correcta. No detiene otras instancias de E2B/E4B.
+
+Para cambiar la carpeta desde PowerShell:
+  .\Instalar.ps1 -InstallDir 'D:\Aplicaciones\E2B'
+
+Opciones de diagnostico:
+  -NoLaunch          Instala modelo y dependencias sin arrancar el servicio.
+  -NoBrowser         Arranca sin abrir el navegador.
+  -NoShortcuts       Omite accesos del menu Inicio.
+  -DependenciesOnly  Prepara herramientas sin descargar el modelo ni arrancarlo.
+  -DownloadCache    Carpeta con ZIPs/wheels previamente descargados y verificables.
+  -ModelCache       Carpeta con ambos GGUF oficiales, para copiarlos tras verificar.
+
+La interfaz es local; no se expone a Internet. El instalador es un conjunto de
+scripts legibles, no un ejecutable firmado. Consulta su codigo, licencia MIT y
+sumas SHA-256 en la publicacion oficial:
+https://github.com/MauricioPerera/jev-qat-local/releases
+
+Si falla el arranque, consulta app\integration\jev-qat-e2b\service.log y backend.log.
+Deten esta instalacion antes de actualizar a otra version. Para retirarla: usa
+"Detener E2B", elimina su carpeta y sus accesos del menu Inicio. Los modelos y las
+cargas de esa instalacion estan dentro de ella; guarda lo que quieras conservar.

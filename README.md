@@ -31,7 +31,27 @@ No se ha validado el arranque del servicio en Linux o macOS. Los valores de memo
 medidos se documentan en [benchmarks/scaling.md](benchmarks/scaling.md); no son un
 requisito mínimo de RAM ni una garantía de rendimiento en otros equipos.
 
-## Instalar E2B
+## Instalador sencillo para Windows
+
+Descarga **JevQat-E2B-Windows-0.2.0.zip** desde
+[GitHub Releases](https://github.com/MauricioPerera/jev-qat-local/releases/latest),
+extrae todo su contenido y haz doble clic en **Instalar E2B.cmd**.
+
+El instalador prepara Python privado, dependencias fijadas, llama.cpp y FFmpeg;
+descarga E2B QAT Q4 y su proyector oficial, comprueba SHA-256 y abre la interfaz
+cuando el servicio está listo. No requiere Git, Python instalado ni permisos de
+administrador. Usa Vulkan si lo detecta y configura CPU como alternativa.
+
+La descarga inicial es de unos **4,5 GB**. Reserva al menos **8 GB** de disco.
+Instala en `%LOCALAPPDATA%\JevQatLocal` y crea accesos de **Abrir E2B** y
+**Detener E2B** en el menú Inicio. Si se interrumpe la descarga del modelo, vuelve
+a ejecutar el instalador para reanudarla. Cerrar el navegador no libera el modelo;
+usa **Detener E2B**. No se configura inicio automático.
+
+Consulta [la guía del instalador](docs/windows-installer.md) para elegir carpeta,
+reutilizar descargas, diagnosticar errores o construir el paquete desde fuentes.
+
+## Instalación manual de E2B
 
 Ejecuta los comandos desde la raíz del repositorio. Se usa instalación editable:
 la configuración, los modelos y el estado pertenecen a esta carpeta.
