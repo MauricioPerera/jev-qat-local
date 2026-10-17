@@ -1,0 +1,7 @@
+{
+  "state": "",
+  "question": "¿Qué tipo de contenido predomina en la imagen?",
+  "options": ["Paisaje", "Persona", "Documento"],
+  "media": "media/example.jpg",
+  "modality": "image"
+}

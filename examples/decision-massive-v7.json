@@ -1,0 +1,27 @@
+{
+  "state": "envía un correo a un nuevo contacto",
+  "question": "¿A qué categoría pertenece la solicitud del usuario? Elige la categoría más específica.",
+  "options": [
+    "Alarmas: crear, cambiar, consultar o cancelar una alarma o despertador.",
+    "Volumen y sonido del dispositivo: subir, bajar o silenciar el audio.",
+    "Calendario: reuniones, citas, eventos y recordatorios con fecha u hora.",
+    "Cocina: recetas, ingredientes, preparación y tiempos de cocción.",
+    "Fecha y hora: hora actual, fechas, días y zonas horarias.",
+    "Correo electrónico: enviar, leer, buscar o responder correos y mensajes de email.",
+    "Conversación general con el asistente: saludos, bromas, ayuda, respuestas y otras solicitudes generales.",
+    "Hogar inteligente: controlar luces, enchufes, calefacción y otros aparatos conectados.",
+    "Listas: crear, consultar o modificar listas de compras, tareas y pendientes.",
+    "Información y preferencias musicales: identificar canciones o artistas, gustos y listas favoritas.",
+    "Noticias: consultar titulares, actualidad y noticias por tema.",
+    "Reproducción de contenido: poner, buscar para reproducir o controlar música, radio, podcasts, audiolibros y juegos.",
+    "Preguntas de conocimiento: datos, definiciones, cálculos, divisas, cotizaciones y otras consultas de información.",
+    "Recomendaciones: sugerir restaurantes, lugares, eventos, películas y actividades.",
+    "Redes sociales: publicar, leer o interactuar en Twitter, Facebook y otras redes.",
+    "Comida a domicilio o para llevar: pedir comida, gestionar pedidos y consultar su estado.",
+    "Transporte y viajes: rutas, tráfico, direcciones, taxis, trenes y reservas de viaje.",
+    "Tiempo meteorológico: clima, temperatura, lluvia y pronóstico del tiempo."
+  ],
+  "modality": "text",
+  "task_profile": "massive_es_v7",
+  "calibration_profile": "massive_scenario_es_v7"
+}

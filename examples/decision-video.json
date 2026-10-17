@@ -1,0 +1,8 @@
+{
+  "state": "",
+  "question": "¿Qué entorno predomina en el vídeo?",
+  "options": ["Exterior", "Interior"],
+  "media": "media/example.mp4",
+  "modality": "video",
+  "video_frames": 8
+}

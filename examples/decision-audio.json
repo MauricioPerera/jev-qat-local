@@ -1,0 +1,7 @@
+{
+  "state": "",
+  "question": "¿Qué tipo de contenido predomina en el audio?",
+  "options": ["Voz hablada", "Música instrumental", "Silencio"],
+  "media": "media/example.wav",
+  "modality": "audio"
+}

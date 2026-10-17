@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jev-qat-local"
+version = "0.1.0"
+description = "Local multimodal Gemma E2B/E4B QAT decision adapter, token budgets and independent option probabilities"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+dependencies = ["httpx>=0.28,<0.29", "fastapi>=0.136,<0.137", "uvicorn>=0.47,<0.48", "pydantic>=2.12,<3", "psutil>=7,<8"]
+
+[project.optional-dependencies]
+test = ["pytest>=9,<10"]
+evaluation = ["numpy>=2.4,<3", "scipy>=1.17,<2", "matplotlib>=3.10,<4", "scikit-learn>=1.8,<2", "joblib>=1.5,<2"]
+benchmark = ["pywin32>=311; sys_platform == 'win32'", "pillow>=11,<13"]
+
+[project.urls]
+Repository = "https://github.com/MauricioPerera/jev-qat-local"
+Issues = "https://github.com/MauricioPerera/jev-qat-local/issues"
+
+[tool.setuptools]
+packages = ["jev_qat"]
+
+[tool.setuptools.package-data]
+jev_qat = ["option_labels.json", "web/*.html", "web/*.css", "web/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

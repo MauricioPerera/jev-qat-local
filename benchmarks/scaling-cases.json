@@ -1,0 +1,112 @@
+[
+  {
+    "id": "image_alps",
+    "label": "Foto Alpes 10109×4542 (45,9 MP)",
+    "source": "inference/real-media-benchmark-20261017/fixtures/alps.jpg",
+    "bytes": 14679474,
+    "sha256": "24eb29eccdf0af691b406d1a3d22c0ef5d761cc454d8a917848c33958f6fc857",
+    "modality": "image",
+    "video_frames": 4,
+    "questions": [
+      {
+        "id": 0,
+        "question": "¿Qué tipo de entorno predomina en la fotografía?",
+        "options": [
+          "montañas y lagos",
+          "ciudad con una torre",
+          "paisaje submarino"
+        ]
+      },
+      {
+        "id": 1,
+        "question": "¿Se observan montañas en la imagen?",
+        "options": [
+          "sí",
+          "no"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "¿La fotografía fue tomada en un entorno natural o en un interior?",
+        "options": [
+          "entorno natural",
+          "interior de un edificio"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "audio_30",
+    "label": "Voz humana española 30 s",
+    "source": "inference/real-media-benchmark-20261017/fixtures/speech-30s.wav",
+    "bytes": 1323078,
+    "sha256": "4d1547e5c01f11ce4660576e943da19f76dd8debd039dfc06caafb3fc3f316e8",
+    "modality": "audio",
+    "video_frames": 4,
+    "questions": [
+      {
+        "id": 0,
+        "question": "¿En qué idioma habla la persona del audio?",
+        "options": [
+          "español",
+          "inglés",
+          "alemán"
+        ]
+      },
+      {
+        "id": 1,
+        "question": "¿Qué tipo de contenido se escucha?",
+        "options": [
+          "una voz humana hablando",
+          "solo música instrumental",
+          "silencio"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "¿Se escucha habla humana en el audio?",
+        "options": [
+          "sí",
+          "no"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "video_60_16",
+    "label": "Vídeo real 60 s / 16 fotogramas",
+    "source": "inference/real-media-benchmark-20261017/fixtures/marseille-60s.mp4",
+    "bytes": 20289393,
+    "sha256": "2f5b960130b1c06940ee8cc28e7906512798204e425cdbd3625cfba1d9867342",
+    "modality": "video",
+    "video_frames": 16,
+    "questions": [
+      {
+        "id": 0,
+        "question": "¿Qué tipo de escena predomina en el vídeo?",
+        "options": [
+          "tráfico urbano con vehículos",
+          "vista aérea de ciudad y costa",
+          "interior de una cocina"
+        ]
+      },
+      {
+        "id": 1,
+        "question": "¿El vídeo muestra una ciudad junto al mar?",
+        "options": [
+          "sí",
+          "no"
+        ]
+      },
+      {
+        "id": 2,
+        "question": "¿Desde qué perspectiva se observa principalmente la escena?",
+        "options": [
+          "vista aérea",
+          "desde el interior de un coche",
+          "primer plano de una persona"
+        ]
+      }
+    ]
+  }
+]

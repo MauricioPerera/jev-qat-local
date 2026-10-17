@@ -1,0 +1,47 @@
+# Local models, runtimes, credentials, user uploads and generated experiments
+/models/
+/runtimes/
+/integration/
+/inference/
+/evaluation/
+/calibration/
+/classification/
+/compatibility/
+/media/
+/data/
+
+# Python / development output
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+build/
+dist/
+node_modules/
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Secrets and downloaded weights must never be committed
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+service.json
+*.gguf
+*.safetensors
+*.joblib
+*.pt
+*.onnx
+*.http-partial
+*.part
+*.log
+*.zip

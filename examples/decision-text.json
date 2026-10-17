@@ -1,0 +1,5 @@
+{
+  "state": "La reunión empieza a las 10:00. Ahora son las 09:00.",
+  "question": "¿Ya empezó la reunión?",
+  "options": ["Sí", "No"]
+}

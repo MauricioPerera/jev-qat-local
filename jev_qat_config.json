@@ -1,0 +1,15 @@
+{
+  "runtime": "runtimes/llama-b11669-vulkan/llama-server.exe",
+  "model": "models/gemma-4-E4B-it-QAT-Q4_0/gemma-4-E4B_q4_0-it.gguf",
+  "projector": "models/gemma-4-E4B-it-QAT-Q4_0/gemma-4-E4B-it-mmproj.gguf",
+  "backend_port": 18164,
+  "api_port": 18165,
+  "device": "Vulkan0",
+  "context_tokens": 4096,
+  "threads": 8,
+  "request_timeout_seconds": 180,
+  "media_roots": ["."],
+  "max_media_bytes": 33554432,
+  "audio_max_seconds": 30,
+  "max_video_frames": 16
+}

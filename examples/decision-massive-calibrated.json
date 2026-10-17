@@ -1,0 +1,26 @@
+{
+  "state": "nueva reunión añadir bill y malinda como asistentes",
+  "question": "¿A qué categoría pertenece la solicitud del usuario? Elige la categoría más específica.",
+  "options": [
+    "Preguntas de conocimiento: datos, definiciones, cálculos, divisas, cotizaciones y otras consultas de información.",
+    "Transporte y viajes: rutas, tráfico, direcciones, taxis, trenes y reservas de viaje.",
+    "Fecha y hora: hora actual, fechas, días y zonas horarias.",
+    "Correo electrónico: enviar, leer, buscar o responder correos y mensajes de email.",
+    "Reproducción de contenido: poner, buscar para reproducir o controlar música, radio, podcasts, audiolibros y juegos.",
+    "Hogar inteligente: controlar luces, enchufes, calefacción y otros aparatos conectados.",
+    "Redes sociales: publicar, leer o interactuar en Twitter, Facebook y otras redes.",
+    "Listas: crear, consultar o modificar listas de compras, tareas y pendientes.",
+    "Cocina: recetas, ingredientes, preparación y tiempos de cocción.",
+    "Calendario: reuniones, citas, eventos y recordatorios con fecha u hora.",
+    "Recomendaciones: sugerir restaurantes, lugares, eventos, películas y actividades.",
+    "Tiempo meteorológico: clima, temperatura, lluvia y pronóstico del tiempo.",
+    "Comida a domicilio o para llevar: pedir comida, gestionar pedidos y consultar su estado.",
+    "Conversación general con el asistente: saludos, bromas, ayuda, respuestas y otras solicitudes generales.",
+    "Volumen y sonido del dispositivo: subir, bajar o silenciar el audio.",
+    "Alarmas: crear, cambiar, consultar o cancelar una alarma o despertador.",
+    "Noticias: consultar titulares, actualidad y noticias por tema.",
+    "Información y preferencias musicales: identificar canciones o artistas, gustos y listas favoritas."
+  ],
+  "modality": "text",
+  "calibration_profile": "massive_scenario_es_v1"
+}
