@@ -171,7 +171,7 @@ def test_release_bundle_is_a_committed_snapshot_and_normalizes_batch_lines(tmp_p
         for filename in ("LICENSE", "NOTICE.md", "installer/windows/LEEME.txt"):
             archive.writestr(filename, "documentation")
     source = stream.getvalue()
-    monkeypatch.setattr(builder, "git", lambda *args: b"a" * 40 if args[0] == "rev-parse" else source)
+    monkeypatch.setattr(builder, "git", lambda *args: b"a" * 40 if args[0] in {"rev-parse", "rev-list"} else source)
     target = builder.build(tmp_path)
     with ZipFile(target) as bundle:
         manifest = json.loads(bundle.read("bundle.json"))
@@ -187,6 +187,6 @@ def test_builder_refuses_private_artifacts_in_snapshot(tmp_path, monkeypatch):
     stream = io.BytesIO()
     with ZipFile(stream, "w") as archive:
         archive.writestr("integration/jev-qat/service.json", '{"secret":"not publishable"}')
-    monkeypatch.setattr(builder, "git", lambda *args: b"a" * 40 if args[0] == "rev-parse" else stream.getvalue())
+    monkeypatch.setattr(builder, "git", lambda *args: b"a" * 40 if args[0] in {"rev-parse", "rev-list"} else stream.getvalue())
     with pytest.raises(ValueError, match="Unexpected"):
         builder.build(tmp_path)

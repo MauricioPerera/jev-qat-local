@@ -20,7 +20,9 @@ def git(*args):
 
 
 def build(output, ref="HEAD"):
-    commit = git("rev-parse", ref + "^{commit}").decode().strip()
+    resolved = git("rev-parse", "--verify", "--end-of-options", ref).decode().strip()
+    # Avoid brace-based revision syntax, which some Windows Git launchers alter.
+    commit = git("rev-list", "--max-count=1", resolved, "--").decode().strip()
     archive = git("archive", "--format=zip", commit)
     with ZipFile(io.BytesIO(archive)) as source:
         for item in source.infolist():
